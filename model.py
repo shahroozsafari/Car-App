@@ -25,13 +25,6 @@ class Car:
         
     
     @classmethod
-    def delete(cls,carid):
-        del_car=RunSQL.execute("DELETE FROM cars_table WHERE carid = ?",(carid,))
-        if del_car.rowcount == 0:
-            print("Car not exists in database !")
-        database.commit()
-    
-    @classmethod
     def find_car(cls,carid):
         select_cars=list(RunSQL.execute("SELECT * FROM cars_table WHERE carid = ?" , (carid,)))
         if len(select_cars) == 0 :
@@ -49,6 +42,14 @@ class Car:
         if update_cars.rowcount == 0 :
             print("Car not exists in database !")
         database.commit()
+    
+    @classmethod
+    def delete(cls,carid):
+        del_car=RunSQL.execute("DELETE FROM cars_table WHERE carid = ?",(carid,))
+        if del_car.rowcount == 0:
+            print("Car not exists in database !")
+        database.commit()
+    
     
     def __del__(self):
         database.close()
