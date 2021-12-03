@@ -1,3 +1,4 @@
+
 import sqlite3
 
 database=sqlite3.Connection("cars_sadatabse.db")
@@ -16,27 +17,38 @@ class Car:
         self.year=year
         self.price=price
         Car.number_of_cars+=1
-    
-    def create(self):
-        RunSQL.execute("INSERT INTO cars_table VALUES(?,?,?,?,?)",(self.carid, self.brand, self.model, self.year, self.price))
-        database.commit()
-    
-    def delete(self,carid):
-        RunSQL.execute("DELETE FROM cars_table WHERE carid = ?",carid)
-        database.commit()
-    
-    def car(self,carid):
-        return RunSQL.execute("SELECT * FROM cars_table WHERE carid = ?" , carid)
-    
-    @classmethod
-    def cars_list(cls):
-        return list(RunSQL.execute("SELECT * FROM cars_table"))
-
-    def update(self, cardid, brand, model, year, price):
-        RunSQL.execute("UPDATE cars-table SET (?,?,?,?,?) WHERE carid = ? ",(cardid, brand, model, year, price),cardid)
-        database.commit()
+        try:
+            RunSQL.execute("INSERT INTO cars_table VALUES(?,?,?,?,?)",(self.carid, self.brand, self.model, self.year, self.price))
+            database.commit()
+        except:
+            print("CarID is duplicate !")
         
     
-car1=Car(101,"Toyota","Camry",2019,22000)
+    @classmethod
+    def delete(cls,carid):
+        del_car=RunSQL.execute("DELETE FROM cars_table WHERE carid = ?",(carid,))
+        if del_car.rowcount == 0:
+            print("Car not exists in database !")
+        database.commit()
+    
+    @classmethod
+    def find_car(cls,carid):
+        select_cars=list(RunSQL.execute("SELECT * FROM cars_table WHERE carid = ?" , (carid,)))
+        if len(select_cars) == 0 :
+            raise Exception("Car not exists in database !")
+        else:
+            return list(select_cars)
+    
+    @classmethod
+    def list(cls):
+        return list(RunSQL.execute("SELECT * FROM cars_table"))
 
-car1.create()
+    @classmethod
+    def update(cls, carid, brand, model, year, price):
+        update_cars=RunSQL.execute("UPDATE cars_table SET carid=?, brand=?, model=?, year=?, price=? WHERE carid=?",(carid, brand, model, year, price,carid))
+        if update_cars.rowcount == 0 :
+            print("Car not exists in database !")
+        database.commit()
+    
+    def __del__(self):
+        database.close()
