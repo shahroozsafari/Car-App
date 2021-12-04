@@ -3,9 +3,9 @@ import sqlite3
 
 database=sqlite3.Connection("cars_sadatabse.db")
 RunSQL = database.cursor()
-
 RunSQL.execute("CREATE TABLE IF NOT EXISTS cars_table(carid INTEGER PRIMARY KEY, brand TEXT, model TEXT, year INTEGER, price FLOAT)")
 database.commit()
+
 
 class Car:
 
@@ -17,13 +17,17 @@ class Car:
         self.year=year
         self.price=price
         Car.number_of_cars+=1
+        self.insert()
+        
+
+    def insert(self):
         try:
             RunSQL.execute("INSERT INTO cars_table VALUES(?,?,?,?,?)",(self.carid, self.brand, self.model, self.year, self.price))
             database.commit()
         except:
             print("CarID is duplicate !")
-        
-    
+
+
     @classmethod
     def find_car(cls,carid):
         select_cars=list(RunSQL.execute("SELECT * FROM cars_table WHERE carid = ?" , (carid,)))
