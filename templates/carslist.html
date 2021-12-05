@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+<style>
+  table, th , td  {
+    border:1px solid rgb(0, 3, 180);
+    margin: 50px;
+   
+    text-align: center;
+  }
+  </style>
+<table style="width:60%">
+  
+    <tr>
+      <th>Car ID</th>
+      <th>Brand</th>
+      <th>Model</th>
+      <th>Year</th>
+      <th>Price</th>
+    </tr>
+    {%for car in allcars %}
+    <tr>
+      <td>{{car[0]}}</td>
+      <td>{{car[1]}}</td>
+      <td>{{car[2]}}</td>
+      <td>{{car[3]}}</td>
+      <td>{{car[4]}}</td>
+    </tr>
+    {% endfor %}
+  </table> 
+{% endblock %}

@@ -17,12 +17,9 @@ class Car:
         self.year=year
         self.price=price
         Car.number_of_cars+=1
-        try:
-            RunSQL.execute("INSERT INTO cars_table VALUES(?,?,?,?,?)",(self.carid, self.brand, self.model, self.year, self.price))
-            database.commit()
-        except:
-            print("CarID is duplicate !")
-        
+        RunSQL.execute("INSERT INTO cars_table VALUES(?,?,?,?,?)",(self.carid, self.brand, self.model, self.year, self.price))
+        database.commit()
+
 
     @classmethod
     def find_car(cls,carid):

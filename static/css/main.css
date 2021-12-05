@@ -69,6 +69,7 @@ a {
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
+  margin: 10px;
 }
 
 .btn-secondary {
