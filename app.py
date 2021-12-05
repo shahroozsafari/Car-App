@@ -15,8 +15,6 @@ def about():
 def newcar():
     if flask.request.method == "POST":
         car=dict(flask.request.form)
-        if len(Car.find_car(car['carid'])) !=0 :
-            return flask.render_template("error.html")
         Car(car['carid'],car['brand'],car['model'],car['year'],car['price'])
         return flask.render_template('/index.html')
     return flask.render_template("/newcar.html")
